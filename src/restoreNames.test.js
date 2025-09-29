@@ -70,4 +70,20 @@ describe('restoreNames function test', () => {
       },
     ]);
   });
+
+  test('Should restore when firstName is empty string (falsy)', () => {
+    const users = [
+      {
+        firstName: '', lastName: 'Walker', fullName: 'Neo Walker',
+      },
+    ];
+
+    restoreNames(users);
+
+    expect(users).toEqual([
+      {
+        firstName: 'Neo', lastName: 'Walker', fullName: 'Neo Walker',
+      },
+    ]);
+  });
 });
