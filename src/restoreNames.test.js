@@ -3,17 +3,28 @@
 describe('restoreNames function test', () => {
   const { restoreNames } = require('./restoreNames');
 
-  test('Should restore first name from full name', () => {
+  test('Should restore first name from full name when firstName property is missing', () => {
     const users = [
+      // missing firstName property entirely
       {
-        firstName: '', lastName: 'Doe', fullName: 'John Doe',
+        lastName: 'Doe', fullName: 'John Doe',
       },
+      // missing firstName property entirely
       {
-        firstName: '', lastName: 'Smith', fullName: 'Jane Smith',
+        lastName: 'Smith', fullName: 'Jane Smith',
       },
     ];
 
-    restoreNames(users);
+    const originalArray = users;
+    const originalUser0 = users[0];
+
+    const ret = restoreNames(users);
+
+    // function returns undefined
+    expect(ret).toBeUndefined();
+    // in-place mutation: same array and same object references
+    expect(users).toBe(originalArray);
+    expect(users[0]).toBe(originalUser0);
 
     expect(users).toEqual([
       {
@@ -21,6 +32,25 @@ describe('restoreNames function test', () => {
       },
       {
         firstName: 'Jane', lastName: 'Smith', fullName: 'Jane Smith',
+      },
+    ]);
+  });
+
+  test('Should restore first name when firstName is explicitly undefined', () => {
+    const users = [
+      {
+        firstName: undefined, lastName: 'Brown', fullName: 'Jack Brown',
+      },
+    ];
+
+    const originalUser0 = users[0];
+    const ret = restoreNames(users);
+
+    expect(ret).toBeUndefined();
+    expect(users[0]).toBe(originalUser0);
+    expect(users).toEqual([
+      {
+        firstName: 'Jack', lastName: 'Brown', fullName: 'Jack Brown',
       },
     ]);
   });
@@ -62,8 +92,11 @@ describe('restoreNames function test', () => {
       },
     ];
 
-    restoreNames(users);
+    const originalUser0 = users[0];
+    const ret = restoreNames(users);
 
+    expect(ret).toBeUndefined();
+    expect(users[0]).toBe(originalUser0);
     expect(users).toEqual([
       {
         firstName: '', lastName: '', fullName: '',
@@ -78,8 +111,11 @@ describe('restoreNames function test', () => {
       },
     ];
 
-    restoreNames(users);
+    const originalUser0 = users[0];
+    const ret = restoreNames(users);
 
+    expect(ret).toBeUndefined();
+    expect(users[0]).toBe(originalUser0);
     expect(users).toEqual([
       {
         firstName: 'Neo', lastName: 'Walker', fullName: 'Neo Walker',
